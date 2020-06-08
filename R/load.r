@@ -83,6 +83,10 @@
 #'   most commonly happens when you accidently source an R file rather than using
 #'   `load_all()`, or define a function directly in the R console, and can be
 #'   frustrating to debug.
+#' @param load_data If `TRUE`, runs pkgload::load_data. It can be desirable to
+#'   skip loading data for analysis packages where exported data is an output
+#'   but exported functions are inputs to the analysis, to avoid confusion with
+#'   previous runs.
 #' @keywords programming
 #' @examples
 #' \dontrun{
@@ -103,7 +107,8 @@
 load_all <- function(path = ".", reset = TRUE, compile = NA,
                      export_all = TRUE, export_imports = export_all,
                      helpers = TRUE, attach_testthat = uses_testthat(path),
-                     quiet = FALSE, recompile = FALSE, warn_conflicts = TRUE) {
+                     quiet = FALSE, recompile = FALSE, warn_conflicts = TRUE,
+                     load_data = TRUE) {
   path <- pkg_path(path)
   package <- pkg_name(path)
   description <- pkg_desc(path)
@@ -190,7 +195,7 @@ load_all <- function(path = ".", reset = TRUE, compile = NA,
   # Add shim objects to imports environment
   insert_imports_shims(package)
 
-  out$data <- load_data(path)
+  if(load_data) {out$data <- load_data(path)}
 
   out$code <- load_code(path)
   register_s3(path)

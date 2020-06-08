@@ -14,7 +14,8 @@ load_all(
   attach_testthat = uses_testthat(path),
   quiet = FALSE,
   recompile = FALSE,
-  warn_conflicts = TRUE
+  warn_conflicts = TRUE,
+  load_data = TRUE
 )
 }
 \arguments{
@@ -54,6 +55,11 @@ between the exported functions and functions in the global namespace. This
 most commonly happens when you accidently source an R file rather than using
 \code{load_all()}, or define a function directly in the R console, and can be
 frustrating to debug.}
+
+\item{load_data}{If \code{TRUE}, runs pkgload::load_data. It can be desirable to
+skip loading data for analysis packages where exported data is an output
+but exported functions are inputs to the analysis, to avoid confusion with
+previous runs.}
 }
 \description{
 \code{load_all} loads a package. It roughly simulates what happens
